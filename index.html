@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Last Letter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('https://i.ibb.co/zZ4qtzW/lavender.jpg') no-repeat center center fixed;
+      background-size: cover;
+      overflow: hidden;
+      text-align: center;
+      color: white;
+    }
+
+    #start, #letter, #question {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px white;
+      width: 70vw;
+      max-width: 700px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    #letter p {
+      font-size: 1.2em;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #fff;
+      color: #333;
+      transition: transform 0.3s ease;
+    }
+
+    #yesBtn {
+      z-index: 1;
+      position: relative;
+    }
+
+    #noBtn {
+      z-index: 2;
+      position: relative;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .babaii {
+      position: absolute;
+      font-size: 1.5em;
+      color: black;
+      animation: float 2s ease-in-out forwards;
+    }
+
+    @keyframes float {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-100px); }
+    }
+
+    .multi-title {
+      font-size: 2.5em;
+      margin: 20px 0;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="start">
+    <h1 class="multi-title">Would u read my last letter?</h1>
+    <input type="text" id="nameInput" placeholder="Type your name first..." />
+    <br /><br />
+    <button onclick="startLetter()">Read</button>
+  </div>
+
+  <div id="letter" class="hidden">
+    <p id="content"></p>
+    <br />
+    <button onclick="nextParagraph()">Next</button>
+  </div>
+
+  <div id="question" class="hidden">
+    <h1>Would u meet me again in another time?</h1>
+    <button id="yesBtn" onclick="handleYes()">YES</button>
+    <button id="noBtn" onclick="handleNo()">NO</button>
+  </div>
+
+  <script>
+    let name = "";
+    let current = 0;
+    let paragraphs = [];
+    const content = document.getElementById("content");
+    let yesBtn = null;
+    let noBtn = null;
+    let scale = 1;
+
+    function startLetter() {
+      name = document.getElementById("nameInput").value.trim();
+      if (!name) {
+        alert("Please enter your name first!");
+        return;
+      }
+
+      paragraphs = [
+        `HELLO ${name.toUpperCase()}!!!`,
+        `if u're reading this, then i've probably already moved. i haven't properly said goodbye yet, right?`,
+        `so... thank you, for everything. since the first time I knew u, i found new reasons to try harder. my grades went up, my spirit grew, and even the hard days didn't feel too heavy anymore.`,
+        `i know i might not be the easiest person to understand, and maybe i made some mistakes along the way. for that, i'm really sorry.`,
+        `there's so much i wanna say, but maybe not all of them need to be said. some feelings are better left soft and quiet... just like how they came.`,
+        `i hope u're doing well, ${name}!! and i really hope that life will be kind to you, always....`,
+        `this is my last little gift, thank u for being part of a chapter i'll always remember.`
+      ];
+
+      document.getElementById("start").classList.add("hidden");
+      document.getElementById("letter").classList.remove("hidden");
+      content.innerText = paragraphs[current];
+    }
+
+    function nextParagraph() {
+      current++;
+      if (current < paragraphs.length) {
+        content.innerText = paragraphs[current];
+      } else {
+        document.getElementById("letter").classList.add("hidden");
+        document.getElementById("question").classList.remove("hidden");
+      }
+    }
+
+    function handleNo() {
+      yesBtn = document.getElementById("yesBtn");
+      noBtn = document.getElementById("noBtn");
+      scale += 0.2;
+      yesBtn.style.transform = `scale(${scale})`;
+
+      if (scale >= 2.4) {
+        noBtn.style.zIndex = 0;
+        yesBtn.style.zIndex = 5;
+      }
+    }
+
+    function handleYes() {
+      document.getElementById("question").classList.add("hidden");
+      setInterval(showBabai, 150);
+    }
+
+    function showBabai() {
+      const babai = document.createElement("div");
+      babai.classList.add("babaii");
+      babai.innerText = "SEE U BABAIIII!";
+      babai.style.left = Math.random() * (window.innerWidth - 150) + "px";
+      babai.style.top = Math.random() * (window.innerHeight - 100) + "px";
+      babai.style.color = getRandomVisibleColor();
+      document.body.appendChild(babai);
+
+      setTimeout(() => {
+        babai.remove();
+      }, 2000);
+    }
+
+    function getRandomVisibleColor() {
+      const colors = ["black", "white", "red", "aqua", "lightyellow", "deeppink"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+  </script>
+
+</body>
+</html>
